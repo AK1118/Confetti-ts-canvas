@@ -2,6 +2,7 @@ import Matrix3All from "../matrix3";
 import Painter from "../painter";
 import Material from "../material";
 import Vector from "../vector";
+import { RenderConfig } from "../renderer";
 
 class Point extends Vector{
     x:number=0;
@@ -32,7 +33,7 @@ abstract class Shape{
     public position:Vector=new Vector(0,0);
     public vector:Vector=new Vector(0,0);
     private _alive:boolean=true;
-    private gravity=.26;
+    private gravity=RenderConfig.grivity;
     get alive():boolean{
         return this._alive;
     }

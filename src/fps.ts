@@ -5,13 +5,15 @@ class FpsUtil {
     private _index_:number= 0;
     private _lastTick_:number= 0;
     public tick() {
+        let _Date:any=Date;
+        if(typeof(performance)!="undefined")_Date=performance;
         // if is first tick, just set tick timestamp and return
         if (!this._lastTick_) {
-            this._lastTick_ = performance.now();
+            this._lastTick_ = _Date.now();
             return 0;
         }
         // calculate necessary values to obtain current tick FPS
-        let now = performance.now();
+        let now = _Date.now();
         let delta = (now - this._lastTick_) * 0.001;
         let fps = 1 / delta;
         // add to fps samples, current tick fps value 

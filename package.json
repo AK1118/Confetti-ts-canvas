@@ -1,6 +1,6 @@
 {
   "name": "confetti-ts-canvas",
-  "version": "0.0.1",
+  "version": "1.1.1",
   "description": "礼花喷发",
   "main": "dist/index.esm.js",
   "module": "dist/index.amd.js",
@@ -17,14 +17,20 @@
     }
   },
   "keywords": [
-    
+    "confetti",
+    "特效礼花",
+    "🎉",
+    "uniapp特效礼花",
+    "五彩纸屑",
+    "中奖庆祝",
+    "物理特效"
   ],
   "files": [
     "dist"
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@babel/preset-typescript": "^7.21.0",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",

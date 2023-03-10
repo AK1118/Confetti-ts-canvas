@@ -10,7 +10,16 @@ enum AnimationState {
 
 var CanvasSize: Size = new Size(0, 0);
 
+interface RenderConfigInterface{
+    grivity?:number,
+}
+
+var RenderConfig:RenderConfigInterface={
+    grivity:.98,
+};
+
 type animationFinishedCallback = () => void;
+
 class CanvasRender {
     //画笔代理
     private paint: Painter;
@@ -30,26 +39,31 @@ class CanvasRender {
     private fpsUtil: FpsUtil = new FpsUtil();
     //显示FPS
     private displayFPS: boolean = false;
-
-    constructor() {
-        
-    }
-    init(paint: CanvasRenderingContext2D|UniNamespace.CanvasContext, size?: { width: number, height: number }, params?:{
+    constructor() {  }
+    /**
+     * @description 初始化渲染器时必须传入 画笔
+     * @param paint 
+     * @param size 
+     * @param params 
+     */
+    init(paint: CanvasRenderingContext2D|UniNamespace.CanvasContext, size?: { width: number, height: number },option?:{
         onFinished?: animationFinishedCallback,
         displayFps?:boolean,
+        grivaty?:number,
     }){
         if (paint) this.paint = new Painter(paint);
-       
         if (size) {
             this.canvasSize.width = size.width;
             this.canvasSize.height = size.height;
+            CanvasSize = this.canvasSize;
         }
-        if(params){
-            if (params.onFinished) this.onFinished = params.onFinished;
-            if(params.displayFps)this.displayFPS=params.displayFps;
+        if(option){
+            if (option.onFinished) this.onFinished = option.onFinished;
+            if(option.displayFps)this.displayFPS=option.displayFps;
+            RenderConfig.grivity=option.grivaty||.30;
         }
        
-        CanvasSize = this.canvasSize;
+        
     }
 
     private update(animationEngine: any) {
@@ -117,9 +131,24 @@ class CanvasRender {
         }
         return Promise.resolve([])
     }
-    run() {
+    /**
+     * @description 销毁渲染器，释放所有内存，无法再继续使用
+     * @returns void
+     */
+    public dispose() {
+        if(this.hasBeenDispose)return;
+		this.hasBeenDispose = true;
+		this.animationState = AnimationState.stop;
+        this.paint.clearRect(0,0,this.canvasSize.width,this.canvasSize.height);
+		this.paint = this.shapeList = this.revoveryShape = this.fpsUtil = null;
+	}
+    /**
+     * @description 运行
+     * @returns 
+     */
+    public run() {
         if (this.hasBeenDispose) {
-            return console.error("This CanvasRender has been destroyed!");
+            return console.error("CanvasRender has been destroyed!");
         }
         let animationEngine = function (callback) {
             setTimeout(callback, 1000 / 60);
@@ -132,7 +161,7 @@ class CanvasRender {
                 this.update(animationEngine);
         });
     }
-    add(shapes: Array<Shape>) {
+    public add(shapes: Array<Shape>) {
         /*fire的时候继续开启动画状态*/
         if (this.animationState == AnimationState.stop) {
             this.animationState = AnimationState.running;
@@ -144,5 +173,6 @@ class CanvasRender {
 
 export {
     CanvasSize,
+    RenderConfig,
 }
 export default CanvasRender;
