@@ -1,5 +1,5 @@
 /**
- * @version 1.1.1
+ * @version 1.1.2
  */
 import ConfettiEjector from "./confettiEjector";
 import CanvasRender, { CanvasSize } from "./renderer";
