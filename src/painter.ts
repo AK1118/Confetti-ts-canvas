@@ -16,7 +16,7 @@ class Painter {
 		this.paint.strokeStyle = style;
 	}
 	draw() {
-		this.paint?.draw();
+		this.paint.draw();
 	}
 	strokeRect(x:number, y:number, w:number, h:number) {
 		this.paint.strokeRect(x, y, w, h);
@@ -28,10 +28,10 @@ class Painter {
 		this.paint.stroke();
 	}
 	clearRect(x:number, y:number, w:number, h:number) {
-		if (typeof(uni) != 'undefined')
+		if (typeof(uni) != 'undefined'&&this.paint.draw){
 			this.draw();
-		else
-			this.paint.clearRect(x, y, w, h);
+		}
+		else this.paint.clearRect(x, y, w, h);
 	}
 	save() {
 		this.paint.save();
@@ -52,7 +52,6 @@ class Painter {
 		this.paint.translate(x, y);
 	}
 	fill() {
-
 		this.paint.fill();
 	}
 	arc(x:number, y:number, radius:number, start:number, end:number) {
